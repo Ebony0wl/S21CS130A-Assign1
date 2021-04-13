@@ -1,0 +1,11 @@
+{
+    "cSpell.words": [
+        "ROTR",
+        "SHFR"
+    ],
+    "files.associations": {
+        "iosfwd": "cpp",
+        "string": "cpp",
+        "iostream": "cpp"
+    }
+}
