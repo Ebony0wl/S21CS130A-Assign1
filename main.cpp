@@ -5,52 +5,137 @@
 
 using namespace std;
 
-class Transaction {
+struct Transaction{
+    /* data */
+    Transaction *prev;
+    Transaction *next;
+    int amount;
+    string sender;
+    string receiver;
+    string nonce;
+    string hash;
+};
+
+
+class BlockChain {
     private:
         /* data */
-        Transaction *prev;
-        int amount;
-        string sender;
-        string receiver;
-        string nonce;
-        string hash;
+        Transaction *head;
+        Transaction *tail;
+        
 
     public:
-        void add(int amount, string sender, string receiver);
-        void getBalance(string person);
-        void printChain();
-        Transaction();
+        BlockChain(){
+            head = NULL;
+            tail = NULL;
+        };
+
+        void add(int amount, string sender, string receiver){
+
+            Transaction *tmp = new Transaction;
+            tmp->amount = amount;
+            tmp->sender = sender;
+            tmp->receiver = receiver;
+            tmp->next = NULL;
+
+            tmp->nonce = char(rand() % 26 + 97);
+            
+
+            if(head == NULL){
+                head = tmp;
+                tail = tmp;
+                tmp->prev = NULL;
+                tmp->hash = "";
+
+            }else{
+                tmp->prev = tail;
+                tail->next = tmp;
+                string h = "test"; 
+                tmp->hash = h;  
+
+                tail = tail->next;  
+            }
+
+        };
+
+        void getBalance(string person){
+            Transaction *tmp = head;
+            int b = 50;
+
+            while(tmp->next != NULL){
+                if (tmp->receiver == person){
+                    b += tmp->amount;
+                }
+                if (tmp->sender == person){
+                    b -= tmp->amount;
+                }
+                tmp = tmp->next;
+            }
+
+
+            if (tmp->receiver == person){
+                b += tmp->amount;
+            }
+            if (tmp->sender == person){
+                b -= tmp->amount;
+            }
+
+            cout << b << endl;
+        };
+
+
+        void printChain(){
+            Transaction *tmp = head;
+
+            while (tmp != tail){
+                cout << "Amount: " << tmp->amount << endl;
+                cout << "Sender: " << tmp->sender << endl;
+                cout << "Receiver: " << tmp->receiver << endl;
+                cout << "Nonce: " << tmp->nonce << endl;
+                cout << "Hash: " << tmp->hash << endl;
+
+                tmp = tmp->next;
+            }
+
+                cout << "Amount: " << tmp->amount << endl;
+                cout << "Sender: " << tmp->sender << endl;
+                cout << "Receiver: " << tmp->receiver << endl;
+                cout << "Nonce: " << tmp->nonce << endl;
+                cout << "Hash: " << tmp->hash << endl;
+            
+        };
+        
 
 };
 
 //  Transaction: Transaction(/* args */)
 // {
 // }
-Transaction::Transaction(void){
-}
+// Transaction::Transaction(void){
+// }
 
-void Transaction::add(int amount, string sender, string receiver){
+// void Transaction::add(int amount, string sender, string receiver){
 
 
-}
+// }
 
-void Transaction::getBalance(string person){
-    //search through tree and add all values with the reciver == name
+// void Transaction::getBalance(string person){
+//     //search through tree and add all values with the reciver == name
 
-}
+// }
 
-void Transaction::printChain(){
-    //
-    while(0/*Not last node*/){
-        cout << "Amount: " << endl;
-        cout << "Sender: " << endl;
-        cout << "Receiver: " << endl;
-        cout << "Nonce: " << endl;
-        cout << "Hash: " << endl;
+// void Transaction::printChain(){
+//     //
+//     while(0/*Not last node*/){
+//         cout << "Amount: " << endl;
+//         cout << "Sender: " << endl;
+//         cout << "Receiver: " << endl;
+//         cout << "Nonce: " << endl;
+//         cout << "Hash: " << endl;
 
-        //go to next node
-    }
-}
+//         //go to next node
+//     }
+// }
 
 
 int main() {
@@ -65,8 +150,9 @@ int main() {
 
     string name;
 
-    Transaction transaction;
-
+    srand(time(NULL));
+    BlockChain block;
+    
     while(1){
         cout << "Welcome to the Transaction Chain..." << endl;
         cout << "1) Add a transaction to the chain" << endl;
@@ -87,18 +173,18 @@ int main() {
             cin >> reciver;
 
             //create a transation node 
-            transaction.add(amount, sender, reciver);
+            block.add(amount, sender, reciver);
         }
         else if (choice == 2){
             cout << "Person's Name: " << endl;
             cin >> name;
 
             //get balance from transaction chain
-            transaction.getBalance(name);
+            block.getBalance(name);
         }
         else if (choice == 3){
             //print cahin
-            transaction.printChain();
+            block.printChain();
         }
         else if (choice == 4){
             return 0;
