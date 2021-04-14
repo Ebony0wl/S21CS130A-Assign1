@@ -38,7 +38,7 @@ class BlockChain {
             tmp->receiver = receiver;
             tmp->next = NULL;
 
-            tmp->nonce = char(rand() % 26 + 97);
+            tmp->nonce = "ab";
             
 
             if(head == NULL){
@@ -150,7 +150,7 @@ int main() {
 
     string name;
 
-    srand(time(NULL));
+    //srand(time(NULL));
     BlockChain block;
     
     while(1){
